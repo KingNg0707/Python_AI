@@ -6,9 +6,8 @@ def arctest_creat(self, window):
     window.create_arc(self.xy, self.xy[0] + self.size[0], self.xy[1] + self.size[1], start=self.startC,
                       extent=self.extentC, fill=self.color)
 
-
 ##画圆1
-class arcs_1(object):
+class gArc_1(object):
     name = 'arc1'
     index = 1
     xy = [10, 10]
@@ -26,51 +25,14 @@ class arcs_1(object):
     def getName(self):
         return self.name
 
-
-##画圆2
-class arcs_2(object):
-    name = 'arc2'
-    index = 2
-    xy = [60, 60]
-    size = [20, 20]
-    startC = 120
-    extentC = 300
-    color = 'blue'
-
-    def setName(self, name):
+    def __init__(self, name, x, y, sx, sy, start, extent, color, index):
         self.name = name
-
-    def setStartC(self, c):
-        self.start = c
-
-    def getName(self):
-        return self.name
-
-
-##画圆3
-class arcs_3(object):
-    name = 'arc3'
-    index = 3
-    xy = [110, 110]
-    size = [20, 20]
-    startC = 120
-    extentC = 300
-    color = 'green'
-
-    def setName(self, name):
-        self.name = name
-
-    def setStartC(self, c):
-        self.start = c
-
-    def getName(self):
-        return self.name
-
-
-# 定义3个园的名称 (4个)
-gArc_1 = arcs_1()
-gArc_2 = arcs_2()
-gArc_3 = arcs_3()
+        self.xy = [x, y]
+        self.size = [sx, sy]
+        self.startC = start
+        self.extentC = extent
+        self.color = color
+        self.index = index
 
 
 def arc_move(xy):
