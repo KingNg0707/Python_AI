@@ -10,10 +10,11 @@ window = tk.Tk()
 window.title('tkinter test')
 window.geometry('400x400')
 
+#创建画布
 mycanvas = tk.Canvas(window, bg='white', height=250, width=250)
 mycanvas.pack()
 
-arc_list=["arc11",20,20,20,20,120,300,"red",11],\
+arc_list=["arc11",120,20,20,20,120,300,"red",11],\
             ["arc12",70,70,20,20,120,300,"blue",12],\
             ["arc13",120,120,20,20,120,300,"green",13],\
             ["arc14",170,170,20,20,120,300,"yellow",14]
@@ -42,15 +43,34 @@ canvas_arc2 = mycanvas.create_arc(arc2.xy, arc2.xy[0] + arc2.size[0], arc2.xy[1]
                                   extent=arc2.extentC, fill=arc2.color)
 canvas_arc3 = mycanvas.create_arc(arc3.xy, arc3.xy[0] + arc3.size[0], arc3.xy[1] + arc3.size[1], start=arc3.startC,
                                   extent=arc3.extentC, fill=arc3.color)
-canvas_arc4 = mycanvas.create_arc(arc4.xy, arc4.xy[0] + arc4.size[0], arc4.xy[1] + arc4.size[1], start=arc4.startC,
-                                  extent=arc4.extentC, fill=arc4.color)
 
 #####移动一个圆
 def arc_move(who, canvas_arc):
     # 旋转角度坐标移动的计算
     x = 1 * math.sin(math.radians(who.startC - 30 + 270))
     y = 1 * math.cos(math.radians(who.startC - 30 + 270))
+
+
     mycanvas.move(canvas_arc, x, y)
+
+    print(arcst[0].startC)
+    print("check place  ",int(arc_check_place(arcst[0])[0]), int(arc_check_place(arcst[0])[1]))
+    ##右边
+    if int(arc_check_place(who)[0]) >240 and (arc_check_Rotate(who)>120 and arc_check_Rotate(who)<300):
+        arcs_x_x(who)
+        #print("#### >=50 ####
+    ##左边
+    elif int(arc_check_place(who)[0]) <0 and (arc_check_Rotate(who)<120 or arc_check_Rotate(who)>300):
+        arcs_x_x(who)
+
+    ##下边
+    if int(arc_check_place(who)[1]) > 240 and (arc_check_Rotate(who) < 210 and arc_check_Rotate(who)>30):
+        arcs_y_y(who)
+        # print("#### >=50 ####  ",arcst[0].startC)
+    ##上边
+    elif int(arc_check_place(who)[1]) < 0 and (arc_check_Rotate(who) > 210 or arc_check_Rotate(who)<30):
+        arcs_y_y(who)
+        #print("#### <=0 ####  ", arcst[0].startC)
 
     who.xy[0] += x
     who.xy[1] += y
@@ -86,7 +106,7 @@ def arc1_randmove():
     arc_randmove(arc1, canvas_arc1)
     #print(arc_check_place(arc1))
     #print(arc_check_Rotate(arc1))
-    
+
     # arc_randRotate(arc1)
 
 
@@ -101,11 +121,22 @@ def arc3_randmove():
     arc_randmove(arc3, canvas_arc3)
     # arc_randRotate(arc3)
 
-def arc4_randmove():
-    arc_randmove(arc4,canvas_arc4)
-
 def arcs_randmove():
     arc_randmove(arcst[0],canvas_arcst[0])
+
+    #print(arc_check_Rotate(arcst[0]))
+
+def arcs_x_x(who):
+    a = who.startC + 180
+    who.startC = a % 360
+
+def arcs_y_y(who):
+    a = who.startC + 270
+    who.startC = a % 360
+    #mycanvas.delete(canvas_arcst[0])
+    #canvas_arcst[0] = mycanvas.create_arc(who.xy, who.xy[0] + who.size[0], who.xy[1] + who.size[1], start=who.startC,
+    #                                      extent=who.extentC, fill=who.color)
+
 
 ###随机旋转 圆1
 def arc1_randRotate():
@@ -136,29 +167,38 @@ def arcs_randRotate():
 
 ####随机移动函数
 def arc_randmove(who, canvas_arc):
-    for i in range(20):
+    global Start
+    for i in range(200):
         if random.randint(0, 5) < 3:  # 前进
             for j in range(10):
                 arc_move(who, canvas_arc)
                 # mycanvas.move(canvas_arctest,2,2)
                 # canvas_arctest.move(mycanvas)
-                time.sleep(0.05)
+                time.sleep(0.03)
                 if Start == False:
                     break
+            if Start == False:
+                break
         if Start == False:
             break
+    Start = False
+
 
 
 def arc_randRotate(who):
-    for i in range(10):
+    global Start
+    for i in range(100):
         if random.randint(0, 5) < 3:  # 转向
             for j in range(10):
                 arc_Rotate_LR(who, random.randint(0, 2))
                 time.sleep(0.05)
                 if Start == False:
                     break
+            if Start == False:
+                break
         if Start == False:
             break
+    Start = False
 
 def  arc_check_place(who):
     return who.xy
@@ -191,9 +231,6 @@ def action1():
     added_thread3.start()
     added_thread3a = threading.Thread(target=arc3_randRotate)
     added_thread3a.start()
-
-    added_thread4 = threading.Thread(target=arc4_randmove)
-    added_thread4.start()
 
     added_thread5 = threading.Thread(target=arcs_randmove)
     added_thread5.start()
