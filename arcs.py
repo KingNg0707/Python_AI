@@ -6,6 +6,7 @@ def arctest_creat(self, window):
     window.create_arc(self.xy, self.xy[0] + self.size[0], self.xy[1] + self.size[1], start=self.startC,
                       extent=self.extentC, fill=self.color)
 
+
 ##画圆1
 class gArc_1(object):
     name = 'arc1'
@@ -16,15 +17,6 @@ class gArc_1(object):
     extentC = 300
     color = 'red'
 
-    def setName(self, name):
-        self.name = name
-
-    def setStartC(self, c):
-        self.start = c
-
-    def getName(self):
-        return self.name
-
     def __init__(self, name, x, y, sx, sy, start, extent, color, index):
         self.name = name
         self.xy = [x, y]
@@ -33,6 +25,15 @@ class gArc_1(object):
         self.extentC = extent
         self.color = color
         self.index = index
+
+    def setName(self, name):
+        self.name = name
+
+    def setStartC(self, c):
+        self.start = c
+
+    def getName(self):
+        return self.name
 
 
 def arc_move(xy):
@@ -44,6 +45,3 @@ def arc_move(xy):
     arc1_xy = [arc1_xy[0] + x, arc1_xy[1] + y, arc1_xy[0] + x + 20, arc1_xy[1] + y + 20]
 
     return xy
-
-
-

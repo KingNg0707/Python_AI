@@ -6,33 +6,38 @@ import threading
 from arcs import gArc_1 as arcs
 
 Start = False
-window = tk.Tk()
-window.title('tkinter test')
-window.geometry('400x400')
 
-#创建画布
+
+def window_init():
+    window = tk.Tk()
+    window.title('tkinter test')
+    window.geometry('400x400')
+    return window
+
+
+window = window_init()
 mycanvas = tk.Canvas(window, bg='white', height=250, width=250)
 mycanvas.pack()
 
-arc_list=["arc11",120,20,20,20,120,300,"red",11],\
-            ["arc12",70,70,20,20,120,300,"blue",12],\
-            ["arc13",120,120,20,20,120,300,"green",13],\
-            ["arc14",170,170,20,20,120,300,"yellow",14]
-arcst=[1,2,3,4]
-canvas_arcst=[1,2,3,4]
+arc_list = ["arc11", 20, 20, 20, 20, 120, 300, "red", 11], \
+           ["arc12", 70, 70, 20, 20, 120, 300, "blue", 12], \
+           ["arc13", 120, 120, 20, 20, 120, 300, "green", 13], \
+           ["arc14", 170, 170, 20, 20, 120, 300, "yellow", 14]
+arcst = [1, 2, 3, 4]
+canvas_arcst = [1, 2, 3, 4]
 
 # 初始化圆的值
 for i in range(len(arc_list)):
-    arcst[i]=arcs(name=arc_list[i][0],x=arc_list[i][1],y=arc_list[i][2],sx=arc_list[i][3],sy=arc_list[i][4],
-                       start=arc_list[i][5],extent=arc_list[i][6],color=arc_list[i][7],index=arc_list[i][8])
+    arcst[i] = arcs(name=arc_list[i][0], x=arc_list[i][1], y=arc_list[i][2], sx=arc_list[i][3], sy=arc_list[i][4],
+                    start=arc_list[i][5], extent=arc_list[i][6], color=arc_list[i][7], index=arc_list[i][8])
     canvas_arcst[i] = mycanvas.create_arc(arcst[i].xy, arcst[i].xy[0] + arcst[i].size[0],
-                                        arcst[i].xy[1] + arcst[i].size[1], start=arcst[i].startC,
-                                        extent=arcst[i].extentC, fill=arcst[i].color)
+                                          arcst[i].xy[1] + arcst[i].size[1], start=arcst[i].startC,
+                                          extent=arcst[i].extentC, fill=arcst[i].color)
 
-arc1=arcs("arc1",10,10,20,20,120,300,"black",1)
-arc2=arcs("arc2",60,60,20,20,120,300,"black",2)
-arc3=arcs("arc3",110,110,20,20,120,300,"black",3)
-arc4=arcs("arc4",160,160,20,20,120,300,"black",4)
+arc1 = arcs("arc1", 10, 10, 20, 20, 120, 300, "black", 1)
+arc2 = arcs("arc2", 60, 60, 20, 20, 120, 300, "black", 2)
+arc3 = arcs("arc3", 110, 110, 20, 20, 120, 300, "black", 3)
+arc4 = arcs("arc4", 160, 160, 20, 20, 120, 300, "black", 4)
 # 创建空间
 # [a*b for a, b in zip(arc1_xy,arc1_size)]
 
@@ -43,37 +48,20 @@ canvas_arc2 = mycanvas.create_arc(arc2.xy, arc2.xy[0] + arc2.size[0], arc2.xy[1]
                                   extent=arc2.extentC, fill=arc2.color)
 canvas_arc3 = mycanvas.create_arc(arc3.xy, arc3.xy[0] + arc3.size[0], arc3.xy[1] + arc3.size[1], start=arc3.startC,
                                   extent=arc3.extentC, fill=arc3.color)
+canvas_arc4 = mycanvas.create_arc(arc4.xy, arc4.xy[0] + arc4.size[0], arc4.xy[1] + arc4.size[1], start=arc4.startC,
+                                  extent=arc4.extentC, fill=arc4.color)
+
 
 #####移动一个圆
 def arc_move(who, canvas_arc):
     # 旋转角度坐标移动的计算
     x = 1 * math.sin(math.radians(who.startC - 30 + 270))
     y = 1 * math.cos(math.radians(who.startC - 30 + 270))
-
-
     mycanvas.move(canvas_arc, x, y)
-
-    print(arcst[0].startC)
-    print("check place  ",int(arc_check_place(arcst[0])[0]), int(arc_check_place(arcst[0])[1]))
-    ##右边
-    if int(arc_check_place(who)[0]) >240 and (arc_check_Rotate(who)>120 and arc_check_Rotate(who)<300):
-        arcs_x_x(who)
-        #print("#### >=50 ####
-    ##左边
-    elif int(arc_check_place(who)[0]) <0 and (arc_check_Rotate(who)<120 or arc_check_Rotate(who)>300):
-        arcs_x_x(who)
-
-    ##下边
-    if int(arc_check_place(who)[1]) > 240 and (arc_check_Rotate(who) < 210 and arc_check_Rotate(who)>30):
-        arcs_y_y(who)
-        # print("#### >=50 ####  ",arcst[0].startC)
-    ##上边
-    elif int(arc_check_place(who)[1]) < 0 and (arc_check_Rotate(who) > 210 or arc_check_Rotate(who)<30):
-        arcs_y_y(who)
-        #print("#### <=0 ####  ", arcst[0].startC)
 
     who.xy[0] += x
     who.xy[1] += y
+
 
 def arc_Rotate_LR(who, LR):
     if LR == 0:
@@ -96,16 +84,18 @@ def arc_Rotate_LR(who, LR):
         canvas_arc3 = mycanvas.create_arc(who.xy, who.xy[0] + who.size[0], who.xy[1] + who.size[1], start=who.startC,
                                           extent=who.extentC, fill=who.color)
     elif who.index == 11:
-        #global canvas_arcst[0]
+        # global canvas_arcst[0]
         mycanvas.delete(canvas_arcst[0])
-        canvas_arcst[0] = mycanvas.create_arc(who.xy, who.xy[0] + who.size[0], who.xy[1] + who.size[1], start=who.startC,
-                                          extent=who.extentC, fill=who.color)
+        canvas_arcst[0] = mycanvas.create_arc(who.xy, who.xy[0] + who.size[0], who.xy[1] + who.size[1],
+                                              start=who.startC,
+                                              extent=who.extentC, fill=who.color)
+
 
 ###随机移动 圆1
 def arc1_randmove():
     arc_randmove(arc1, canvas_arc1)
-    #print(arc_check_place(arc1))
-    #print(arc_check_Rotate(arc1))
+    # print(arc_check_place(arc1))
+    # print(arc_check_Rotate(arc1))
 
     # arc_randRotate(arc1)
 
@@ -121,21 +111,13 @@ def arc3_randmove():
     arc_randmove(arc3, canvas_arc3)
     # arc_randRotate(arc3)
 
+
+def arc4_randmove():
+    arc_randmove(arc4, canvas_arc4)
+
+
 def arcs_randmove():
-    arc_randmove(arcst[0],canvas_arcst[0])
-
-    #print(arc_check_Rotate(arcst[0]))
-
-def arcs_x_x(who):
-    a = who.startC + 180
-    who.startC = a % 360
-
-def arcs_y_y(who):
-    a = who.startC + 270
-    who.startC = a % 360
-    #mycanvas.delete(canvas_arcst[0])
-    #canvas_arcst[0] = mycanvas.create_arc(who.xy, who.xy[0] + who.size[0], who.xy[1] + who.size[1], start=who.startC,
-    #                                      extent=who.extentC, fill=who.color)
+    arc_randmove(arcst[0], canvas_arcst[0])
 
 
 ###随机旋转 圆1
@@ -152,8 +134,10 @@ def arc2_randRotate():
 def arc3_randRotate():
     arc_randRotate(arc3)
 
+
 def arcs_randRotate():
     arc_randRotate(arcst[0])
+
 
 # def arc_check_edge():
 #    if
@@ -167,47 +151,43 @@ def arcs_randRotate():
 
 ####随机移动函数
 def arc_randmove(who, canvas_arc):
-    global Start
-    for i in range(200):
+    for i in range(20):
         if random.randint(0, 5) < 3:  # 前进
             for j in range(10):
                 arc_move(who, canvas_arc)
                 # mycanvas.move(canvas_arctest,2,2)
                 # canvas_arctest.move(mycanvas)
-                time.sleep(0.03)
+                time.sleep(0.05)
                 if Start == False:
                     break
-            if Start == False:
-                break
         if Start == False:
             break
-    Start = False
-
 
 
 def arc_randRotate(who):
-    global Start
-    for i in range(100):
+    for i in range(10):
         if random.randint(0, 5) < 3:  # 转向
             for j in range(10):
                 arc_Rotate_LR(who, random.randint(0, 2))
                 time.sleep(0.05)
                 if Start == False:
                     break
-            if Start == False:
-                break
         if Start == False:
             break
-    Start = False
 
-def  arc_check_place(who):
+
+def arc_check_place(who):
     return who.xy
+
+
 def arc_check_Rotate(who):
     return who.startC
 
 
 ##动作开始
 threads = []
+
+
 def action1():
     global Start
     Start = True
@@ -232,10 +212,14 @@ def action1():
     added_thread3a = threading.Thread(target=arc3_randRotate)
     added_thread3a.start()
 
+    added_thread4 = threading.Thread(target=arc4_randmove)
+    added_thread4.start()
+
     added_thread5 = threading.Thread(target=arcs_randmove)
     added_thread5.start()
     added_thread5a = threading.Thread(target=arcs_randRotate)
     added_thread5a.start()
+
 
 def action1_stop():
     print(threading.current_thread())
@@ -245,12 +229,10 @@ def action1_stop():
 
 
 # 初始化按键
-moveButton = tk.Button(window, text='move', \
-    command=action1)
+moveButton = tk.Button(window, text='move', command=action1)
 moveButton.pack()
 
-moveButton2 = tk.Button(window, text='stop', \
-    command=action1_stop)
+moveButton2 = tk.Button(window, text='stop', command=action1_stop)
 moveButton2.pack()
 # for i in range(10):
 #    time.sleep(0.1)
@@ -258,4 +240,3 @@ moveButton2.pack()
 
 # 窗口循环刷新
 window.mainloop()
-
