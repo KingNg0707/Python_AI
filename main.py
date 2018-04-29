@@ -8,11 +8,11 @@ def main():
     wds.window_init()
     window = wds.window
 
-    mc = Canva()
+    mc = Canva(300,250)
     mc.mycanvas_init(window)
-    mycanvas = mc.mycanvas
+    # mycanvas = mc.mycanvas
 
-    creatures = Creature(mycanvas)
+    creatures = Creature(mc)
     creatures.arcs_init()
 
     wds.button_init(creatures)

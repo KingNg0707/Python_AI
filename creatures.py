@@ -3,8 +3,8 @@ from arcs import Arc
 
 
 class Creature():
-    def __init__(self, mycanvas):
-        self._mycanvas = mycanvas
+    def __init__(self, mc):
+        self._mc = mc
         self._arc = Arc
         self.arcs_list = []
         self.canvas_arcst = []
@@ -28,13 +28,13 @@ class Creature():
                                         color=self.arc_list[i][7],
                                         index=self.arc_list[i][8])
 
-            arc = self._mycanvas.create_arc(self.arcs_list[i].xy,
-                                            self.arcs_list[i].xy[0] + self.arcs_list[i].size[0],
-                                            self.arcs_list[i].xy[1] + self.arcs_list[i].size[1],
-                                            start=self.arcs_list[i].startC, extent=self.arcs_list[i].extentC,
-                                            fill=self.arcs_list[i].color)
-            self.arcs_list[i]._canvas = self._mycanvas
-            self.arcs_list[i]._arc = arc
+            arc = self._mc.mycanvas.create_arc(self.arcs_list[i].xy,
+                                               self.arcs_list[i].xy[0] + self.arcs_list[i].size[0],
+                                               self.arcs_list[i].xy[1] + self.arcs_list[i].size[1],
+                                               start=self.arcs_list[i].startC, extent=self.arcs_list[i].extentC,
+                                               fill=self.arcs_list[i].color)
+            self.arcs_list[i].canvas = self._mc
+            self.arcs_list[i].arc = arc
             self.canvas_arcst.append(arc)
 
     def run_threads(self):
